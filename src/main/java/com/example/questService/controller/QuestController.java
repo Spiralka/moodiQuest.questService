@@ -25,24 +25,21 @@ public class QuestController {
     @GetMapping("daily")
     public List<Quest> getDailyQuests() {
         System.out.println("Requesting daily quests");
-        // Отправляем запрос на очередь и ожидаем ответ
-        List<Quest> dailyQuests = (List<Quest>) rabbitTemplate.convertSendAndReceive("questExchange", "questRequestQueue", "");
+        List<Quest> dailyQuests = (List<Quest>) rabbitTemplate.convertSendAndReceive("questExchange", "dailyQuests", "");
         return dailyQuests;
     }
 
     @GetMapping("{id}")
     public Quest getQuestById(@PathVariable Long id) {
         System.out.println("Requesting quest by id: " + id);
-        // Отправляем запрос с идентификатором и ожидаем ответ
-        Quest quest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "questByIdQueue", id);
+        Quest quest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "questById", id);
         return quest;
     }
 
     @GetMapping("random")
     public Quest getRandomQuest() {
         System.out.println("Requesting random quest");
-        // Отправляем запрос на случайное задание и ожидаем ответ
-        Quest randomQuest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "questRandomQueue", "");
+        Quest randomQuest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "randomQuest", "");
         return randomQuest;
     }
 }
