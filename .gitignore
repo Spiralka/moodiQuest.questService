@@ -37,5 +37,4 @@ out/
 .vscode/
 
 ### Spring profiles configs ###
-src/main/resources/application-prod.properties
 src/main/resources/application-dev.properties

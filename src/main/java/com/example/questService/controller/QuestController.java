@@ -51,14 +51,6 @@ public class QuestController {
     }
 
 
-//    @GetMapping("daily")
-//    public List<Quest> getDailyQuests() {
-//        System.out.println("Requesting daily quests");
-//        List<Quest> dailyQuests = (List<Quest>) rabbitTemplate.convertSendAndReceive("questExchange", "dailyQuests", "");
-//        return dailyQuests;
-//    }
-
-
     @Operation(
             summary = "Получить квест по ID",
             description = "Возвращает квест из базы данных по указанному идентификатору. ID передается в запросе как путь параметра."

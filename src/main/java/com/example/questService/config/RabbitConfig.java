@@ -11,10 +11,16 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     public static final String EXCHANGE_NAME = "questExchange";
+    public static final String NOSQL_EXCHANGE_NAME = "questQueueNoSql";
 
     @Bean
     public DirectExchange questExchange() {
         return new DirectExchange(EXCHANGE_NAME);
+    }
+
+    @Bean
+    public DirectExchange noSqlExchange() {
+        return new DirectExchange(NOSQL_EXCHANGE_NAME);
     }
 
     @Bean
@@ -29,13 +35,5 @@ public class RabbitConfig {
         rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
     }
-
-
-//    @Bean
-//    public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-//        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-//        return rabbitTemplate;
-//    }
 
 }
