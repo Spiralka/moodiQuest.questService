@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -72,4 +69,49 @@ public class QuestController {
         Quest randomQuest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "randomQuest", "");
         return randomQuest;
     }
+
+    @Operation(
+            summary = "Добавить новый квест",
+            description = "Добавляет новый квест в базу данных."
+    )
+    @PostMapping("/add")
+    ResponseEntity<String> addQuest(@RequestBody Quest quest) {
+        System.out.println("Adding quest: " + quest.getShortName());
+        rabbitTemplate.convertSendAndReceive("questExchange", "addQuest", quest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(quest.getShortName());
+    }
+
+    @Operation(
+            summary = "Обновить квест по ID",
+            description = "Обновляет существующий квест по идентификатору."
+    )
+    @PutMapping("/update/{id}")
+    ResponseEntity<String> updateQuest(@PathVariable Long id, @RequestBody Quest quest) {
+        System.out.println("Updating quest with id: " + id);
+
+        quest.setId(id);
+        String result = (String) rabbitTemplate.convertSendAndReceive("questExchange", "updateQuest", quest);
+
+        if ("Quest not found".equals(result)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quest with id " + id + " not found");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Quest with id " + id + " has been updated");
+    }
+
+
+    @Operation(
+            summary = "Удалить квест по ID",
+            description = "Удаляет существующий квест по идентификатору."
+    )
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteQuest(@PathVariable Long id) {
+        System.out.println("Deleting quest with id: " + id);
+        String result = (String) rabbitTemplate.convertSendAndReceive("questExchange", "deleteQuest", id);
+        if ("Quest not found".equals(result)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quest with id " + id + " not found");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Quest with id " + id + " has been deleted");
+    }
+
+
 }

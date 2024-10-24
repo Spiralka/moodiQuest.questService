@@ -34,4 +34,8 @@ public class Quest implements Serializable {
         return progressNumber;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
 }
