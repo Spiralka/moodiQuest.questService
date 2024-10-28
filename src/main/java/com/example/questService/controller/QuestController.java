@@ -39,8 +39,8 @@ public class QuestController {
 
 
     @Operation(
-            summary = "Попытка сделать кофе",
-            description = "Эндпоинт возвращает HTTP статус 418 (I'm a teapot) с сообщением о том, что сервер — это чайник и не может приготовить кофе."
+            summary = "✨Попытка сделать кофе ✨",
+            description = "Эндпоинт возвращает HTTP статус 418 (I'm a teapot) с сообщением о том, что сервер — это чайник и не может приготовить кофе. ☕\uFE0F"
     )
     @GetMapping("/makeCoffee")
     public ResponseEntity<String> makeCoffee() {
