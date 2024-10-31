@@ -1,6 +1,8 @@
 package com.example.questService.controller;
 
 import com.example.questModel.Quest;
+import com.example.questService.DTO.QuestDTO;
+import com.example.questService.DTO.QuestMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -53,10 +55,10 @@ public class QuestController {
             description = "Возвращает квест из базы данных по указанному идентификатору. ID передается в запросе как путь параметра."
     )
     @GetMapping("{id}")
-    public Quest getQuestById(@PathVariable Long id) {
+    public QuestDTO getQuestById(@PathVariable Long id) {
         System.out.println("Requesting quest by id: " + id);
         Quest quest = (Quest) rabbitTemplate.convertSendAndReceive("questExchange", "questById", id);
-        return quest;
+        return QuestMapper.INSTANCE.questToQuestDTO(quest);
     }
 
     @Operation(
