@@ -1,13 +1,17 @@
 package com.example.questService.controller;
 
+
 import com.example.questModel.Quest;
 import com.example.questService.DTO.QuestDTO;
 import com.example.questService.DTO.QuestMapper;
+import io.micrometer.core.aop.CountedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -113,6 +117,15 @@ public class QuestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quest with id " + id + " not found");
         }
         return ResponseEntity.status(HttpStatus.OK).body("Quest with id " + id + " has been deleted");
+    }
+
+    @Operation(
+            summary = "Тестовый метод, который всегда возвращает ошибку 500",
+            description = "Этот метод возвращает HTTP статус 500 для тестирования обработки ошибок."
+    )
+    @GetMapping("/testError")
+    public ResponseEntity<String> testError() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This is a simulated server error (500)");
     }
 
 
