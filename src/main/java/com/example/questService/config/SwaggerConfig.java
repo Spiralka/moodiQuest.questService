@@ -16,6 +16,6 @@ public class SwaggerConfig {
                         .title("MoodiQuest API")
                         .version("1.0")
                         .description("API для MoodiQuest микросервиса"))
-                .addServersItem(new Server().url("http://localhost:8080/"));
+                .addServersItem(new Server().url("https://moodiquest.online"));
     }
 }
